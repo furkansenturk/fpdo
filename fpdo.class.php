@@ -11,11 +11,14 @@ class fpdo {
 	private $is_set;
 	private $set;
 	private $limit;
-	private $siralama;
+	private $is_limit;
+	private $is_siralama;
+	private $sirala;
 	private $inc;
 	private $lastInsertId;
 	private $hata;
-
+	
+	/*fpdo içerisindeki değerleri sıfırlar*/
 	private function sifirla(){
 		$this->tip = null;
 		$this->sutun = "*";
@@ -25,12 +28,15 @@ class fpdo {
 		$this->is_set = 0;
 		$this->set = null;
 		$this->limit = null;
-		$this->siralama = null;
+		$this->is_limit = 0;
+		$this->is_siralama = 0;
+		$this->sirala = null;
 		$this->set = null;
 		$this->hata = 0;
 		$this->inc = null;
 	}
-
+	
+	/*pdo dbsini fpdo içerisine dahil eder*/
 	public function __construct($db){
 		$this->db = $db;
 		$this->sifirla();
@@ -52,31 +58,42 @@ class fpdo {
 		$this->tip = "DELETE";
 		$this->tablo = $tablo;
 	}
+	
 	/* Hangi sutünların çekileceğini belirtir */
 	public function sutun($x="*"){
 		$this->sutun = $x;
 	}
-	/*WHERE ile verileri sinirlama*/
+	
+	/*WHERE komutu*/
 	public function where($x){
 		/*verileri bölmek için AND veya OR kullanilir*/
 		$this->is_where = 1;
 		$this->where = $x;
 	}
+	
 	/*SET Komutu*/
 	public function set($x){
 		$this->is_set = 1;
 		$this->set = $x;
 	}
-	/* kaçtane veri çekleceğini belirtir*/
+	
+	/*Çekilecek verileri limitler*/
 	public function limit($x){
 		/* değerin tam sayı olup olmadığını kontrol eder*/
 		if(is_int($x)){
 			$this->limit = $x;
+			$this->is_limit = 1;
 		}else{
 			$this->hata = 1;
 			$this->hata_text = "limit değeri tam sayı olmalı";
 		}
 	}
+	/*Çekilen verileri sıraya sokar */
+	public function sirala($x= "id",$y="desc"){
+		$this->is_siralama = 1;
+		$this->sirala = " ORDER BY ".$x." ".$y;
+	}
+	/*Insert işlemi yapıldıktan sonra son eklenen id'yi çeker */
 	public function lastInsertId(){
 		return $this->lastInsertId;
 	}
@@ -117,6 +134,7 @@ class fpdo {
 				$this->hata = 1;
 				$this->hata_text = "UPDATE işleminde ne değiştirileceği belirtilmedi ! (SET komutu)";
 			}
+			
 		}else if($this->tip == "INSERT INTO"){
 			$text = "INSERT INTO ".$this->tablo;
 
@@ -132,7 +150,6 @@ class fpdo {
 				$this->hata_text = "INSERT işleminde ne değiştirileceği belirtilmedi ! (SET komutu)";
 			}
 
-
 		}else if($this->tip == "DELETE"){
 			$text = "DELETE FROM ".$this->tablo;
 
@@ -145,15 +162,20 @@ class fpdo {
 			$this->hata_text = "Veri tipi belirtilmedi (select,update,insert,delete)";
 		}
 
-
-
 		if($this->is_set == 1 || $this->is_where == 1){
 			if($this->inc==null){
 				$this->hata = 1;
 				$this->hata_text = "Değişken belirtilmedi";
 			}
 		}
-
+		/*SIRALAMAyı dahil ediyoruz*/
+		if($this->is_siralama){
+			$text.= $this->sirala;
+		}
+		/*LİMİTi dahil ettik*/
+		if($this->is_limit){
+			$text.= " LIMIT ".$this->limit;
+		}
 		/*
 			yapida hata var ise sorgu yapmaya gerek yok zaten :)
 		*/
