@@ -7,10 +7,10 @@ PDO tabanlı class dosyası.
 
 | veri işleme tipleri | Açıklama |
 | ------ | ------ |
-| select | sqldeki verileri okur |
-| update | verileri günceler (**where** ve **set** zorunludur) |
-| insert | Yeni veriyi sql'e kayıt eder |
-| delete | Sql verisini siler  (**where** ile birlikte kullanılabilir) |
+| [select](#select) | sqldeki verileri okur |
+| [update](#update) | verileri günceler (**where** ve **set** zorunludur) |
+| [insert](#insert) | Yeni veriyi sql'e kayıt eder |
+| [delete](#delete) | Sql verisini siler  (**where** ile birlikte kullanılabilir) |
 
 öncelikle pdo bağlantımızı yapalım
 ```php
