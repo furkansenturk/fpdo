@@ -140,7 +140,7 @@ class fpdo {
 
 		}else if($this->tip == "DELETE"){
 			$text = "DELETE FROM ".$this->tablo;
-			
+
 			/*WHERE var ise ekliyoruz*/
 			if($this->is_where){
 				$text.=" WHERE ".$this->where;
@@ -172,7 +172,11 @@ class fpdo {
 			if($this->tip == "INSERT INTO"){
 				$this->lastInsertId = $db->lastInsertId();
 			}
-			return $sonuc;
+			if($this->tip == "SELECT"){
+				return $query;
+			}else{
+				return $sonuc;
+			}
 
 		}
 
