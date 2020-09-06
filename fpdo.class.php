@@ -16,8 +16,6 @@ class fpdo {
 	private $lastInsertId;
 	private $hata;
 
-
-
 	private function sifirla(){
 		$this->tip = null;
 		$this->sutun = "*";
@@ -68,9 +66,6 @@ class fpdo {
 	public function set($x){
 		$this->is_set = 1;
 		$this->set = $x;
-	}
-	public function inc_Array($x){
-		$this->inc = $x; 
 	}
 	/* kaçtane veri çekleceğini belirtir*/
 	public function limit($x){
