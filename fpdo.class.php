@@ -43,18 +43,22 @@ class fpdo {
 	}
 	/* Tablo ve hangi işlemler olacağı belirtilir */
 	public function select($tablo){ 
+		$this->sifirla();
 		$this->tip = "SELECT";
 		$this->tablo = $tablo;
 	}
 	public function update($tablo){ 
+		$this->sifirla();
 		$this->tip = "UPDATE";
 		$this->tablo = $tablo;
 	}
 	public function insert($tablo){ 
+		$this->sifirla();
 		$this->tip = "INSERT INTO";
 		$this->tablo = $tablo;
 	}
 	public function delete($tablo){ 
+		$this->sifirla();
 		$this->tip = "DELETE";
 		$this->tablo = $tablo;
 	}
@@ -79,14 +83,10 @@ class fpdo {
 	
 	/*Çekilecek verileri limitler*/
 	public function limit($x){
-		/* değerin tam sayı olup olmadığını kontrol eder*/
-		if(is_int($x)){
+		
 			$this->limit = $x;
 			$this->is_limit = 1;
-		}else{
-			$this->hata = 1;
-			$this->hata_text = "limit değeri tam sayı olmalı";
-		}
+		
 	}
 	/*Çekilen verileri sıraya sokar */
 	public function sirala($x= "id",$y="desc"){
@@ -179,6 +179,9 @@ class fpdo {
 		/*
 			yapida hata var ise sorgu yapmaya gerek yok zaten :)
 		*/
+			echo $text;
+			print_r($this->inc);
+			echo"<hr>";
 		if($this->hata == 1){
 			$this->sifirla();
 			exit($this->hata_text);
@@ -197,7 +200,6 @@ class fpdo {
 
 		}
 
-		$this->sifirla();
 	}
 
 }
