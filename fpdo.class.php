@@ -179,9 +179,6 @@ class fpdo {
 		/*
 			yapida hata var ise sorgu yapmaya gerek yok zaten :)
 		*/
-			echo $text;
-			print_r($this->inc);
-			echo"<hr>";
 		if($this->hata == 1){
 			$this->sifirla();
 			exit($this->hata_text);
